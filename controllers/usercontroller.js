@@ -20,23 +20,23 @@ router.post("/create", function(req, res){
     res.status(500).json({ error: err});
     });
 });
-router.post("/login", function (req, res) {
-    User.findOne({
-        where: {
-            email: req.body.user.email,
-        },
-    })
-    .then(function loginsuccess(user) {
-        if (user) {
-            res.status(200).json({
-                user: user,
-                message: "user successfully logged in"
-            });
-        }else {
-    res.status(500).json({error:"User does not exist" });
+// router.post("/login", function (req, res) {
+//     User.findOne({
+//         where: {
+//             email: req.body.user.email,
+//         },
+//     })
+//     .then(function loginsuccess(user) {
+//         if (user) {
+//             res.status(200).json({
+//                 user: user,
+//                 message: "user successfully logged in"
+//             });
+//         }else {
+//     res.status(500).json({error:"User does not exist" });
 
-        }});
-    })
+//         }});
+    // })
 
  // Next section
 
