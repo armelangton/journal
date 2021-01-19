@@ -23,4 +23,17 @@ res.send('Hey!! This is a practice route!') });
         .then(journal => res.status(200).json(journal))
     .catch(err=> res.status(500).json ({error: err} ))
 })
+
+/********************
+**Get All Entries***
+******************** */
+
+router.get('/', (req, res) => {
+    Journal.findAll()
+    .then(journals => res.status(200) .json(journals))
+    .catch(err => res.status(500).json({ error: err}))
+});
+
+
 module.exports =router;
+
