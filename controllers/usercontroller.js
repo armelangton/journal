@@ -3,7 +3,7 @@ const User=require("../db").import("../models/user");
 const bcrypt=require("bcryptjs");
 
 router.post("/create", function(req, res){
- user.create({ 
+ User.create({ 
         email: req.body.user.email,
         password: bcrypt.hashSync(req.body.user.password, 10),
     })
@@ -13,6 +13,7 @@ router.post("/create", function(req, res){
     user: user,
     message: "User successfully created!",   
     sessionToken: token,
+})
 })
 
 .catch( function createFail(err) {
@@ -32,9 +33,11 @@ router.post("/login", function (req, res) {
                 message: "user successfully logged in"
             });
         }else {
-    res.status(500).json({error:"User does not exist" })
-        }})})
+    res.status(500).json({error:"User does not exist" });
+
+        }});
+    })
 
  // Next section
 
- export modules= router
+modules.exports= router
