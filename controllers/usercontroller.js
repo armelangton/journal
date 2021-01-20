@@ -21,9 +21,26 @@ router.post("/create", function(req, res){
     res.status(500).json({ error: err});
     });
 });
+
+// Create a new endpoint: /login
+//The endpoint is going to be a post request
+//Build a query statement (hard code in a user's email that exists in your databse)
+//use findone
+//Let sequelize return a success
+//if we find one return user info and if a user doesnt exisit return "user does not exist"
+
 router.post("/login", function (req, res) {
-    User.findOne({
-        where: {
+    User.findOne({where: { email: "test4@test.com" } })
+    .then(function loginSuccess(user){
+        if(user){
+            res.send(200).json({ user: user});
+        } else {
+        res.send('User not found')
+    }
+});
+    
+
+router.post({where: {
             email: req.body.user.email,
         },
     })
@@ -38,7 +55,5 @@ router.post("/login", function (req, res) {
 
         }});
     })
-
- // Next section
 
 module.exports= router
