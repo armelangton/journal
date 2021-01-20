@@ -50,7 +50,7 @@ router.post({where: {
                 user: user,
                 message: "user successfully logged in"
             });
-        }else {
+        } else {
     res.status(500).json({error:"User does not exist" });
 
         }});
