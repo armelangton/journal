@@ -35,5 +35,18 @@ router.get('/', (req, res) => {
 });
 
 
+/********* *
+Get Entries by user
+***************/
+
+router.get('/mine')
+
+
+
+
+
+
 module.exports =router;
+
+
 
