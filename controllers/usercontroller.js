@@ -3,57 +3,60 @@ const User=require("../db").import("../models/user");
 const bcrypt=require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+/*****************************
+ * ******USER create********
+ *****************************/
 router.post("/create", function(req, res){
  User.create({ 
         email: req.body.user.email,
-        password: bcrypt.hashSync(req.body.user.password, 13),
-    })
+        password: bcrypt.hashSync(req.body.user.password,13)
+          })
     .then(function createSuccess(user) {
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
+ let token=jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
     res.json({
     user: user,
     message: "User successfully created!",   
     sessionToken: token,
-})
-})
-
-.catch( function createFail(err) {
-    res.status(500).json({ error: err});
-    });
 });
+})
 
-// Create a new endpoint: /login
-//The endpoint is going to be a post request
-//Build a query statement (hard code in a user's email that exists in your databse)
-//use findone
-//Let sequelize return a success
-//if we find one return user info and if a user doesnt exisit return "user does not exist"
+.catch((err) => res.status(500).json({ error: err }));
+ });
 
+
+
+// /********USER SIGN IN**********/
 router.post("/login", function (req, res) {
-    User.findOne({where: { email: "test4@test.com" } })
-    .then(function loginSuccess(user){
-        if(user){
-            res.send(200).json({ user: user});
-        } else {
-        res.send('User not found')
-    }
-});
-    
-
-router.post({where: {
-            email: req.body.user.email,
-        },
+    User.findOne({
+      where: {
+        email: req.body.user.email,
+      },
     })
-    .then(function loginsuccess(user) {
+      .then(function loginSuccess(user) {
         if (user) {
-            res.status(200).json({
+          bcrypt.compare(req.body.user.password, user.password, function (
+            err,
+            matches
+          ) {
+            if (matches) {
+              let token = jwt.sign({ id: user.id }, "i_am_secret", {
+                expiresIn: 60 * 60 * 24,
+              });
+              res.status(200).json({
                 user: user,
-                message: "user successfully logged in"
-            });
+                message: "User Succesfully logged in!",
+                sessionToken: token,
+              });
+            } else {
+              res.status(502).send({ error: "Login Failed" });
+            }
+          });
         } else {
-    res.status(500).json({error:"User does not exist" });
+          res.status(500).json({ error: "User does not exist." });
+        }
+      })
+      .catch((err) => res.status(500).json({ error: err }));
+  });
 
-        }});
-    })
 
-module.exports= router
+module.exports =router;

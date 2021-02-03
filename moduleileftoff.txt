@@ -1,1 +1,21 @@
 git config --global user.name “ARMELANGTON”
+
+three states of git
+1. modofed: file changed, but it has not been commited: 
+file changed, but it has not been commited
+
+2. staging:
+git add . or git add script.js
+files that are marked to go into the next commit snapshot 
+
+3. commit stage:
+data being safely stored in your local database, docker, pc, vm box, etc.
+
+git init starts a new project
+
+should never be inside another project folder in order to avoid inverted tree tracking issues. 
+
+stage our files for a commitgit add file
+
+to comit your files use git commit -m "your message", command.
+
